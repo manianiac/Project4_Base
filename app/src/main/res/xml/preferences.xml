@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    <PreferenceCategory
+        android:title="Settings">
+        <!--<EditTextPreference android:title="Enter Website Name"-->
+            <!--android:key="websiteName"-->
+            <!--android:summary="This is the name of the website you would like to fetch content from"></EditTextPreference>-->
+        <Preference
+            android:title="Choose Website Name"
+            android:key="websiteName"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

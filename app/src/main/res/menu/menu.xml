@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+	<item
+        android:id="@+id/spinner"
+        android:prompt="@string/spinnerTitle"
+        android:title="SortBy:"
+        android:popupBackground="@android:color/background_light"
+        android:showAsAction="always"
+        android:textColor="#ffffffff"
+        android:actionViewClass="android.widget.Spinner" ></item>"
+    <item
+        android:id="@+id/action_settings"
+        android:icon="@drawable/action_settings1"
+        android:showAsAction="never"
+        android:title="Settings">
+    </item>
+ <item
+        android:id="@+id/action_about"
+        android:showAsAction="never"
+        android:title="About">
+    </item>
+
+
+</menu>
