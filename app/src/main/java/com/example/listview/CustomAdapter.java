@@ -59,6 +59,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     public View getView(int position, View convertView, ViewGroup parentView) {
 
 	//TODO fill this out, use both Viewholder and convertview
+        //do we need Viewholder? 
 
         View view = null;
         if (convertView == null) {
