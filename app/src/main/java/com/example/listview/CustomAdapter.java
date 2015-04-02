@@ -92,28 +92,22 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     /**
      * @param string
      */
-    //TODO reload data then done?
-    //TODO change where data coming from and reload data
     public void setNewURL(String string) {
 	    URL_of_JSON_host = string;
-
-
         notifyDataSetChanged();
         //reload data
     }
 
-
+//TODO figure out Cases to sort...
     public void sortList(int pos) {
-	/*
-	TODO pos defines field to sort on
-	TODO based on that sort your dataset and then reload
-	*/
+
         switch(pos){
+            //Model is the first on Spinner, then Price
             case 0:
-                Collections.sort(data, new BikeData.ComparatorPrice());
+                Collections.sort(data, new BikeData.ComparatorModel());
                 break;
             case 1:
-                Collections.sort(data, new BikeData.ComparatorModel());
+                Collections.sort(data, new BikeData.ComparatorPrice());
                 break;
 
         }

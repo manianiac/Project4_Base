@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.helper.JSONHelper;
 
@@ -45,6 +46,14 @@ public class Activity_ListView extends ListActivity {
 
     private SharedPreferences myPreference;
     OnItemSelectedListener mySpinnerListener;
+
+
+
+    void showToast(CharSequence msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +84,6 @@ public class Activity_ListView extends ListActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View selectedItemView, int position, long id) {
                 Log.d(TAG, "Spinner changed " + selectedItemView.toString());
-                //TODO resort List
             }
 
             @Override
@@ -200,6 +208,27 @@ public class Activity_ListView extends ListActivity {
         s.setPrompt("Sort By:");
         s.setPopupBackgroundResource(android.R.color.background_light);
         s.setAdapter(mSpinnerAdapter);
+        s.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.d(TAG, "Spinner changed " + view.toString());
+                showToast("Spinner1: position=" + position + " id=" + id);
+
+
+                //TODO resort List
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+
 
         //TODO bind the spinner listener to the spinner
         return true;
