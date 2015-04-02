@@ -23,10 +23,13 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.helper.JSONHelper;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import static android.R.color.background_light;
 
@@ -64,12 +67,7 @@ public class Activity_ListView extends ListActivity {
         myPreference.registerOnSharedPreferenceChangeListener(listener);
 
         //TODO Import all the code to make this work
-        ConnectivityCheck check = new ConnectivityCheck(this);
-        if(check.isNetworkReachableAlertUserIfNot()) {
-            downloadJSON task = new downloadJSON(this);
-            task.execute("http://" + myPreference.getString("websiteName", "noneSpecified")+"/pets.json");
 
-        }
 
 
         //listen for a spinner change
@@ -87,6 +85,11 @@ public class Activity_ListView extends ListActivity {
 
 
         //TODO load prefs and find which URL JSON data will come from
+        ConnectivityCheck check = new ConnectivityCheck(this);
+        if(check.isNetworkReachableAlertUserIfNot()) {
+            downloadJSON task = new downloadJSON(this);
+            task.execute(downloadSite + "bikes.json");
+        }
         //TODO load JSON data String
         //TODO call routine to parse JSON string into collection of objects, look at the JSONHelper class
         //TODO create custom adapter (myAdapter) and pass in your collection of JSON objects for it to draw from for display
@@ -169,6 +172,7 @@ public class Activity_ListView extends ListActivity {
         protected void onPostExecute(String result){
             if (myActivity != null) {
                 //TODO deal with the JSON
+                ArrayList<BikeData> bikeDataArrayList = JSONHelper.parseAll(result);
             }
         }
     }
