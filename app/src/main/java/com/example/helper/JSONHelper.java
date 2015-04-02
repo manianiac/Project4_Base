@@ -45,6 +45,20 @@ public class JSONHelper {
 	    //TODO get the raw array of bikes from jAll
         JSONArray bikes = jAll.getJSONArray("Bikes");
         System.out.print(true);
+        for(int i = 0; i < bikes.length(); i++)
+        {
+           JSONObject j = bikes.getJSONObject(i);
+           BikeData bike = new BikeData(
+                   j.getString("Company"),
+                   j.getString("Model"),
+                   j.getString("Location"),
+                   j.getString("Date"),
+                   j.getString("Description"),
+                   j.getString("Picture"),
+                   j.getString("Link"),
+                   j.getDouble("Price"));
+            collectionOfBikes.add(bike);
+        }
 	    //TODO iterate through this array building 1 bike object at a time and adding it to the list
 	    
 	} catch (JSONException e) {

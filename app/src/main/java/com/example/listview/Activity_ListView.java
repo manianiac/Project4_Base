@@ -173,6 +173,7 @@ public class Activity_ListView extends ListActivity {
             if (myActivity != null) {
                 //TODO deal with the JSON
                 ArrayList<BikeData> bikeDataArrayList = JSONHelper.parseAll(result);
+                System.out.print(true);
             }
         }
     }

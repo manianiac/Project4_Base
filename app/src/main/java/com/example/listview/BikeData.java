@@ -11,14 +11,14 @@ public class BikeData {
      */
 
     public BikeData(String c, String m, String l, String da, String de, String pic, String li, double p) {
-        String Company = c;
-        String Model = m;
-        String Location = l;
-        String Date = da;
-        String Descripton = de;
-        String Picture = pic;
-        String Link = li;
-        double Price = p;
+        Company = c;
+        Model = m;
+        Location = l;
+        Date = da;
+        Descripton = de;
+        Picture = pic;
+        Link = li;
+        Price = p;
     }
 
     @Override
