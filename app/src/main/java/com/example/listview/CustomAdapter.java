@@ -23,7 +23,9 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     private static final String DOLLARSIGN = "$ ";
     private List<BikeData> data;
     Context context;
-    private String URL_of_JSON_host = null; 
+    private String URL_of_JSON_host = null;
+    private LayoutInflater inflater;
+    private int layoutId;
     
     /**
      * @author lynn
@@ -54,24 +56,49 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parentView) {
 
 	//TODO fill this out, use both Viewholder and convertview
 
-	//give it to listview for display
-	return convertView;
+        View view = null;
+        if (convertView == null) {
+            view = inflater.inflate(layoutId, parentView, false);
+        } else {
+            view = convertView;
+        }
+
+        //set the imageView
+
+
+        //set the Model
+        TextView textView = (TextView) view.findViewById(R.id.Model);
+        textView.setText(data.get(position).Model);
+
+        //set the Price
+        TextView PriceView = (TextView) view.findViewById(R.id.Price);
+        PriceView.setText(String.valueOf(data.get(position).Price));
+
+        //set the Description
+        TextView DescView = (TextView)view.findViewById(R.id.Description);
+        DescView.setText(data.get(position).Descripton);
+
+        return view;
+        //give it to listview for display
     }
 
     /**
      * @param string
      */
+    //TODO reload data then done?
+    //TODO change where data coming from and reload data
     public void setNewURL(String string) {
-	//TODO change where data coming from and reload data
+	    URL_of_JSON_host = string;
+
+
+        //reload data
     }
 
-    /**
-     * @param string
-     */
+
     public void sortList(int pos) {
 	//TODO pos defines field to sort on
 	//TODO based on that sort your dataset and then reload
