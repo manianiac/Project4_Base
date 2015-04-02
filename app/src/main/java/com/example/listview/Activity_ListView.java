@@ -41,6 +41,7 @@ public class Activity_ListView extends ListActivity {
     private static final String TAG = "Activity_ListView";
     private static final int TIMEOUT = 1000;
     private String downloadSite = "http://www.tetonsoftware.com/bikes/";
+    private ArrayList<BikeData> bikeDataArrayList;
 
     OnSharedPreferenceChangeListener listener;
 
@@ -65,6 +66,7 @@ public class Activity_ListView extends ListActivity {
         //make this listener an instance var so it is not GCed due to it being
         //saved as a weak reference
         myPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        //TODO Figure out what this does VVV
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 Log.d(TAG, "Preference key =" + key);
@@ -76,8 +78,6 @@ public class Activity_ListView extends ListActivity {
         myPreference.registerOnSharedPreferenceChangeListener(listener);
 
         //TODO Import all the code to make this work
-
-
 
         //listen for a spinner change
         mySpinnerListener = new OnItemSelectedListener() {
@@ -91,15 +91,11 @@ public class Activity_ListView extends ListActivity {
             }
         };
 
-
-        //TODO load prefs and find which URL JSON data will come from
         ConnectivityCheck check = new ConnectivityCheck(this);
         if(check.isNetworkReachableAlertUserIfNot()) {
             downloadJSON task = new downloadJSON(this);
             task.execute(downloadSite + "bikes.json");
         }
-        //TODO load JSON data String
-        //TODO call routine to parse JSON string into collection of objects, look at the JSONHelper class
         //TODO create custom adapter (myAdapter) and pass in your collection of JSON objects for it to draw from for display
         //TODO bind dataadapter to this listview,  setListAdapter(myAdapter);
     }
@@ -179,19 +175,12 @@ public class Activity_ListView extends ListActivity {
         @Override
         protected void onPostExecute(String result){
             if (myActivity != null) {
-                //TODO deal with the JSON
-                ArrayList<BikeData> bikeDataArrayList = JSONHelper.parseAll(result);
-                System.out.print(true);
+                bikeDataArrayList = JSONHelper.parseAll(result);
             }
         }
     }
 
-
-
-
-
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -206,6 +195,7 @@ public class Activity_ListView extends ListActivity {
         ArrayAdapter<CharSequence> mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinnerSort, android.R.layout.simple_spinner_item);
         mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setPrompt("Sort By:");
+        //TODO change background in Ice Cream Sandwich
         s.setPopupBackgroundResource(android.R.color.background_light);
         s.setAdapter(mSpinnerAdapter);
         s.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -320,6 +310,23 @@ public class Activity_ListView extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("About Bike:");
+        builder.setMessage(l.getSelectedItem().toString());
+
+        builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+
+        TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
+        messageView.setGravity(Gravity.CENTER);
         //TODO make your dialog that prints out data about the object selected
         //     Hint override toString() for your BikeData object and have it print out a row of data
         //     followed by a + '\n' + to have multiple rows in the dialog
