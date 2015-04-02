@@ -34,16 +34,16 @@ public class BikeData {
         return temp;
     }
 
-    //TODO create your comparators
-//TODO Done?
-    class ComparatorModel implements Comparator<BikeData> {
+
+
+    public static class ComparatorModel implements Comparator<BikeData> {
         public int compare(BikeData myData1, BikeData myData2) {
 // if both equal then 0
             return (myData1.Model.compareTo(myData2.Model));
         }
     }
 
-    class ComparatorPrice implements Comparator<BikeData> {
+    public static class ComparatorPrice implements Comparator<BikeData> {
         public int compare(BikeData myData1, BikeData myData2) {
 // if both equal then 0
             if (myData1.Price > myData2.Price)

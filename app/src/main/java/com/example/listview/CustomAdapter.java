@@ -46,7 +46,10 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     public CustomAdapter(Context context, int textViewResourceId,
 	    List<BikeData> data, String URL_of_JSON_host) {
 	super(context, textViewResourceId, data );
-	
+
+
+
+
 	//yes thats a reference to same object
 	//but I dont want to allocate too much memory
 	this.data = data;
@@ -59,7 +62,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     public View getView(int position, View convertView, ViewGroup parentView) {
 
 	//TODO fill this out, use both Viewholder and convertview
-        //do we need Viewholder? 
+        //do we need Viewholder?
 
         View view = null;
         if (convertView == null) {
@@ -68,8 +71,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
             view = convertView;
         }
 
-        //set the imageView
-
+        //TODO set the imageView
 
         //set the Model
         TextView textView = (TextView) view.findViewById(R.id.Model);
@@ -96,13 +98,26 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
 	    URL_of_JSON_host = string;
 
 
+        notifyDataSetChanged();
         //reload data
     }
 
 
     public void sortList(int pos) {
-	//TODO pos defines field to sort on
-	//TODO based on that sort your dataset and then reload
+	/*
+	TODO pos defines field to sort on
+	TODO based on that sort your dataset and then reload
+	*/
+        switch(pos){
+            case 0:
+                Collections.sort(data, new BikeData.ComparatorPrice());
+                break;
+            case 1:
+                Collections.sort(data, new BikeData.ComparatorModel());
+                break;
+
+        }
+        notifyDataSetChanged();
 
     }
 }
