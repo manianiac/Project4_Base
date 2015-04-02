@@ -215,7 +215,7 @@ public class Activity_ListView extends ListActivity {
                 showToast("Spinner1: position=" + position + " id=" + id);
 
 
-                //TODO resort List
+                //TODO resort List This is where the spinner is CHANGED!
             }
 
             @Override
