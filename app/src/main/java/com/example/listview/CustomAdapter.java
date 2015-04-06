@@ -39,13 +39,6 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
      * the images pictureID (its filename) so that I could match the picture 
      * to the bike when sorting so  
      */
-    private static class ViewHolder {
-	ImageView imageView1;
-	TextView Model;
-	TextView Price;
-	TextView Description;
-	String pictureID ;
-    }
 
     //TODO define your custom adapter, pass in your collection of bikedata
     public CustomAdapter(Context context, int textViewResourceId,
@@ -64,34 +57,44 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
 
    }
 
-
+    private static class ViewHolder {
+        ImageView imageView;
+        TextView textView;
+        TextView PriceView;
+        TextView DescView;
+        String pictureID ;
+    }
+//TODO viewholder
     @Override
     public View getView(int position, View convertView, ViewGroup parentView) {
-
-	//TODO Implement viewholder
-
-        //do we need Viewholder?
-
+        ViewHolder myvh;
         View view = null;
         if (convertView == null) {
             view = inflater.inflate(R.layout.listview_row_layout, parentView, false);
         } else {
             view = convertView;
+           // myvh = (ViewHolder) convertView.getTag();
         }
 
         //TODO set the imageView
 
+        myvh = new ViewHolder();
+
+        myvh.textView = (TextView) view.findViewById(R.id.Model);
+        myvh.PriceView = (TextView) view.findViewById(R.id.Price);
+        myvh.DescView = (TextView)view.findViewById(R.id.Description);
+        myvh.imageView = (ImageView)view.findViewById(R.id.imageView1);
         //set the Model
-        TextView textView = (TextView) view.findViewById(R.id.Model);
-        textView.setText(data.get(position).Model);
+
+        myvh.textView.setText(data.get(position).Model);
 
         //set the Price
-        TextView PriceView = (TextView) view.findViewById(R.id.Price);
-        PriceView.setText(String.valueOf(data.get(position).Price));
+
+        myvh.PriceView.setText(String.valueOf(data.get(position).Price));
 
         //set the Description
-        TextView DescView = (TextView)view.findViewById(R.id.Description);
-        DescView.setText(data.get(position).Descripton);
+
+        myvh.DescView.setText(data.get(position).Descripton);
 
         return view;
         //give it to listview for display
