@@ -1,5 +1,7 @@
 package com.example.listview;
 
+//TODO Questions: 1) Inflator Null, 2)Do we need to use Viewholder 3)Set the Imageview
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,7 +54,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     this.activity = activity;
     if (activity != null)
         this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+    //layoutId = context.;
     //yes thats a reference to same object
 	//but I dont want to allocate too much memory
 	this.data = data;
@@ -66,12 +68,13 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     @Override
     public View getView(int position, View convertView, ViewGroup parentView) {
 
-	//TODO fill this out, use both Viewholder and convertview
+	//TODO Implement viewholder
+
         //do we need Viewholder?
 
         View view = null;
         if (convertView == null) {
-            view = inflater.inflate(layoutId, parentView, false);
+            view = inflater.inflate(R.layout.listview_row_layout, parentView, false);
         } else {
             view = convertView;
         }
