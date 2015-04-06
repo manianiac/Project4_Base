@@ -341,7 +341,8 @@ public class Activity_ListView extends ListActivity {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("About Bike:");
-        builder.setMessage(l.getSelectedItem().toString());
+        Object c = l.getItemAtPosition(position);
+        builder.setMessage(l.getItemAtPosition(position).toString());
 
         builder.setPositiveButton("Okay", new DialogInterface.OnClickListener() {
             @Override
