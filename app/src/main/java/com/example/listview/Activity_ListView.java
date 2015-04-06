@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.AsyncTask;
@@ -32,9 +31,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static android.R.color.background_light;
-
-
 public class Activity_ListView extends ListActivity {
     private static final String BIKEJSON = "bikes.json";
     private static final String URL_JSON = "URLPref";
@@ -47,7 +43,6 @@ public class Activity_ListView extends ListActivity {
     CustomAdapter adapter;
 
 
-    private SharedPreferences myPreference;
     OnItemSelectedListener mySpinnerListener;
 
 
@@ -76,19 +71,17 @@ public class Activity_ListView extends ListActivity {
         //when this key changes then the URL has changed, so reload it
         //make this listener an instance var so it is not GCed due to it being
         //saved as a weak reference
-        myPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        //TODO Figure out what this does VVV
+        SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 Log.d(TAG, "Preference key =" + key);
                 if (key.equals(URL_JSON)) {
+                    showToast("BLARG");
                     //TODO handle URL changes
                 }
             }
         };
         myPreference.registerOnSharedPreferenceChangeListener(listener);
-
-        //TODO Import all the code to make this work
 
         //listen for a spinner change
         mySpinnerListener = new OnItemSelectedListener() {
@@ -105,13 +98,8 @@ public class Activity_ListView extends ListActivity {
         ConnectivityCheck check = new ConnectivityCheck(this);
         if(check.isNetworkReachableAlertUserIfNot()) {
             downloadJSON task = new downloadJSON(this);
-            task.execute(downloadSite + "bikes.json");
+            task.execute(downloadSite + BIKEJSON);
         }
-
-
-
-        //TODO create custom adapter (myAdapter) and pass in your collection of JSON objects for it to draw from for display
-        //TODO bind dataadapter to this listview,  setListAdapter(myAdapter);
     }
 
 
@@ -209,16 +197,12 @@ public class Activity_ListView extends ListActivity {
 
         //get a reference to the action bar spinner
         Spinner s = (Spinner) menu.findItem(R.id.spinner).getActionView();
-
-        //TODO create a SpinnerAdapter for the spinner and bind it to the spinner
-        //SpinnerAdapter mSpinnerAdapter = your code here
-        //s.setAdapter(mSpinnerAdapter);
-
         ArrayAdapter<CharSequence> mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinnerSort, android.R.layout.simple_spinner_item);
         mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setPrompt("Sort By:");
         //TODO change background in Ice Cream Sandwich
-        s.setPopupBackgroundResource(android.R.color.background_light);
+        //TODO ASK PERKINS ABOUT THIS
+        //s.setPopupBackgroundResource(android.R.color.background_light);
         s.setAdapter(mSpinnerAdapter);
         s.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -229,7 +213,6 @@ public class Activity_ListView extends ListActivity {
                     //0 is compareModel
                     showToast("Spinner1: position=" + position + " id=" + id);
                     Activity_ListView.this.adapter.sortList(adapter.MODEL);
-
                 }
                 else if(position == 2){
                     //1 is comparePrice
@@ -237,8 +220,6 @@ public class Activity_ListView extends ListActivity {
                     Activity_ListView.this.adapter.sortList(adapter.PRICE);
 
                 }
-
-                //TODO resort List This is where the spinner is CHANGED!
             }
 
             @Override
@@ -246,9 +227,6 @@ public class Activity_ListView extends ListActivity {
 
             }
         });
-
-
-        //TODO bind the spinner listener to the spinner
         return true;
     }
 
@@ -271,6 +249,7 @@ public class Activity_ListView extends ListActivity {
 
  public void doSettings(){
      //AlertDialog alert = new AlertDialog(this);
+     //TODO fix settings to use settings activity
      CharSequence[] websites = {"tetonsoftware", "cnu.pcs"};
      AlertDialog.Builder builder = new AlertDialog.Builder(this);
      builder.setTitle("Select The Website To Download From:");
@@ -356,10 +335,6 @@ public class Activity_ListView extends ListActivity {
 
         TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
-        //TODO make your dialog that prints out data about the object selected; Done?
-        //     Hint override toString() for your BikeData object and have it print out a row of data
-        //     followed by a + '\n' + to have multiple rows in the dialog
-
     }
 
 }

@@ -6,8 +6,9 @@
         android:title="SortBy:"
         android:popupBackground="@android:color/background_light"
         android:showAsAction="always"
-        android:textColor="#ffffffff"
-        android:actionViewClass="android.widget.Spinner" ></item>"
+        android:textColor="@color/White"
+        android:actionViewClass="android.widget.Spinner"
+        />
     <item
         android:id="@+id/action_settings"
         android:icon="@drawable/action_settings1"
