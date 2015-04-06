@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -21,6 +22,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
 
     private static final String TAG = "CustomAdapter";
     private static final String DOLLARSIGN = "$ ";
+    private Activity activity;
     private List<BikeData> data;
     Context context;
     public final int PRICE = 0, MODEL = 1;
@@ -45,17 +47,19 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
 
     //TODO define your custom adapter, pass in your collection of bikedata
     public CustomAdapter(Context context, int textViewResourceId,
-	    List<BikeData> data, String URL_of_JSON_host) {
+	    List<BikeData> data, String URL_of_JSON_host, Activity activity) {
 	super(context, textViewResourceId, data );
+    this.activity = activity;
+    if (activity != null)
+        this.inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-
-
-
-	//yes thats a reference to same object
+    //yes thats a reference to same object
 	//but I dont want to allocate too much memory
 	this.data = data;
 	this.context = context;
 	this.URL_of_JSON_host = URL_of_JSON_host;
+
+
    }
 
 

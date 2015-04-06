@@ -44,6 +44,8 @@ public class Activity_ListView extends ListActivity {
     private ArrayList<BikeData> bikeDataArrayList;
 
     OnSharedPreferenceChangeListener listener;
+    CustomAdapter adapter;
+
 
     private SharedPreferences myPreference;
     OnItemSelectedListener mySpinnerListener;
@@ -59,6 +61,15 @@ public class Activity_ListView extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+//        adapter = new CustomAdapter(this,R.layout.listview_row_layout, bikeDataArrayList, downloadSite);
+//        // a custom data adapter
+//        setListAdapter(adapter);
+
+
+
 
         // listen for a change to the URL_JSON key,
         //its the key part of the key value pair that holds the URL to load
@@ -96,6 +107,9 @@ public class Activity_ListView extends ListActivity {
             downloadJSON task = new downloadJSON(this);
             task.execute(downloadSite + "bikes.json");
         }
+
+
+
         //TODO create custom adapter (myAdapter) and pass in your collection of JSON objects for it to draw from for display
         //TODO bind dataadapter to this listview,  setListAdapter(myAdapter);
     }
@@ -176,8 +190,16 @@ public class Activity_ListView extends ListActivity {
         protected void onPostExecute(String result){
             if (myActivity != null) {
                 bikeDataArrayList = JSONHelper.parseAll(result);
+                createCustomAdapter();
             }
         }
+    }
+
+    private void createCustomAdapter()
+    {
+        adapter = new CustomAdapter(this,R.layout.listview_row_layout, bikeDataArrayList, downloadSite, this);
+        // a custom data adapter
+        setListAdapter(adapter);
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
@@ -200,10 +222,21 @@ public class Activity_ListView extends ListActivity {
         s.setAdapter(mSpinnerAdapter);
         s.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
+            //MODEL is 1, PRICE is zero
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 Log.d(TAG, "Spinner changed " + view.toString());
-                showToast("Spinner1: position=" + position + " id=" + id);
+                if(position == 1){
+                    //0 is compareModel
+                    showToast("Spinner1: position=" + position + " id=" + id);
+                    Activity_ListView.this.adapter.sortList(adapter.MODEL);
 
+                }
+                else if(position == 2){
+                    //1 is comparePrice
+                    showToast("Spinner1: position=" + position + " id=" + id);
+                    Activity_ListView.this.adapter.sortList(adapter.PRICE);
+
+                }
 
                 //TODO resort List This is where the spinner is CHANGED!
             }
