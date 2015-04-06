@@ -58,7 +58,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
    }
 
     private static class ViewHolder {
-        ImageView imageView1;
+        ImageView imageView;
         TextView textView;
         TextView PriceView;
         TextView DescView;
@@ -73,20 +73,27 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
             view = inflater.inflate(R.layout.listview_row_layout, parentView, false);
         } else {
             view = convertView;
+           // myvh = (ViewHolder) convertView.getTag();
         }
-        myvh = new ViewHolder();
+
         //TODO set the imageView
 
-        //set the Model
+        myvh = new ViewHolder();
+
         myvh.textView = (TextView) view.findViewById(R.id.Model);
+        myvh.PriceView = (TextView) view.findViewById(R.id.Price);
+        myvh.DescView = (TextView)view.findViewById(R.id.Description);
+        myvh.imageView = (ImageView)view.findViewById(R.id.imageView1);
+        //set the Model
+
         myvh.textView.setText(data.get(position).Model);
 
         //set the Price
-         myvh.PriceView = (TextView) view.findViewById(R.id.Price);
+
         myvh.PriceView.setText(String.valueOf(data.get(position).Price));
 
         //set the Description
-        myvh.DescView = (TextView)view.findViewById(R.id.Description);
+
         myvh.DescView.setText(data.get(position).Descripton);
 
         return view;
