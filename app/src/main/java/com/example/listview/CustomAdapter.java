@@ -23,6 +23,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     private static final String DOLLARSIGN = "$ ";
     private List<BikeData> data;
     Context context;
+    public final int PRICE = 0, MODEL = 1;
     private String URL_of_JSON_host = null;
     private LayoutInflater inflater;
     private int layoutId;
@@ -103,10 +104,10 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
 
         switch(pos){
             //Model is the first on Spinner, then Price
-            case 0:
+            case MODEL:
                 Collections.sort(data, new BikeData.ComparatorModel());
                 break;
-            case 1:
+            case PRICE:
                 Collections.sort(data, new BikeData.ComparatorPrice());
                 break;
 

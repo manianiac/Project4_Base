@@ -215,11 +215,6 @@ public class Activity_ListView extends ListActivity {
         });
 
 
-
-
-
-
-
         //TODO bind the spinner listener to the spinner
         return true;
     }
@@ -327,7 +322,7 @@ public class Activity_ListView extends ListActivity {
 
         TextView messageView = (TextView)dialog.findViewById(android.R.id.message);
         messageView.setGravity(Gravity.CENTER);
-        //TODO make your dialog that prints out data about the object selected
+        //TODO make your dialog that prints out data about the object selected; Done?
         //     Hint override toString() for your BikeData object and have it print out a row of data
         //     followed by a + '\n' + to have multiple rows in the dialog
 
