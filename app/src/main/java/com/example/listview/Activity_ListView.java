@@ -1,7 +1,6 @@
 package com.example.listview;
 //test this
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
@@ -209,16 +208,9 @@ public class Activity_ListView extends ListActivity {
         getMenuInflater().inflate(R.menu.menu, menu);
 
         //get a reference to the action bar spinner
-        ActionBar actionBar = getActionBar();
+        Spinner s = (Spinner) menu.findItem(R.id.spinner).getActionView();
 
-        actionBar.setDisplayShowCustomEnabled(true);
-
-        actionBar.setCustomView(R.layout.spinner1);
-
-        Spinner s = (Spinner) actionBar.getCustomView().findViewById(R.id.spinner1);
-
-       // Spinner s = (Spinner) menu.findItem(R.id.spinner).getActionView();
-
+        //TODO create a SpinnerAdapter for the spinner and bind it to the spinner
         //SpinnerAdapter mSpinnerAdapter = your code here
         //s.setAdapter(mSpinnerAdapter);
 
