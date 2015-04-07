@@ -219,7 +219,6 @@ public class Activity_ListView extends ListActivity {
 
        // Spinner s = (Spinner) menu.findItem(R.id.spinner).getActionView();
 
-        //TODO create a SpinnerAdapter for the spinner and bind it to the spinner
         //SpinnerAdapter mSpinnerAdapter = your code here
         //s.setAdapter(mSpinnerAdapter);
 
