@@ -2,8 +2,10 @@
  * 
  */
 package com.example.listview;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
@@ -11,6 +13,7 @@ import android.preference.PreferenceFragment;
 
 public class activityPreference extends PreferenceActivity {
 
+    private String downloadSite;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
