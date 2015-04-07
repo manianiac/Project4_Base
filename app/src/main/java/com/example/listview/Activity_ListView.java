@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.AsyncTask;
@@ -25,6 +26,8 @@ import android.widget.Toast;
 
 import com.example.helper.JSONHelper;
 
+import org.json.JSONArray;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -36,9 +39,9 @@ public class Activity_ListView extends ListActivity {
     private static final String URL_JSON = "URLPref";
     private static final String TAG = "Activity_ListView";
     private static final int TIMEOUT = 1000;
-    private String downloadSite = "http://www.tetonsoftware.com/bikes/";
+    private static final int SETTINGS_ACTIVITY = 42;
     private ArrayList<BikeData> bikeDataArrayList;
-
+    private SharedPreferences myPreference;
     OnSharedPreferenceChangeListener listener;
     CustomAdapter adapter;
 
@@ -56,22 +59,12 @@ public class Activity_ListView extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-//        adapter = new CustomAdapter(this,R.layout.listview_row_layout, bikeDataArrayList, downloadSite);
-//        // a custom data adapter
-//        setListAdapter(adapter);
-
-
-
-
         // listen for a change to the URL_JSON key,
         //its the key part of the key value pair that holds the URL to load
         //when this key changes then the URL has changed, so reload it
         //make this listener an instance var so it is not GCed due to it being
         //saved as a weak reference
-        SharedPreferences myPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        myPreference = PreferenceManager.getDefaultSharedPreferences(this);
         listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                 Log.d(TAG, "Preference key =" + key);
@@ -98,10 +91,34 @@ public class Activity_ListView extends ListActivity {
         ConnectivityCheck check = new ConnectivityCheck(this);
         if(check.isNetworkReachableAlertUserIfNot()) {
             downloadJSON task = new downloadJSON(this);
-            task.execute(downloadSite + BIKEJSON);
+            task.execute(myPreference.getString("websiteName", "I AM FILLER") + BIKEJSON);
         }
     }
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        switch(requestCode) {
+            case SETTINGS_ACTIVITY: {
+                if (resultCode == 0) {
+                    mySpinnerListener = new OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> arg0, View selectedItemView, int position, long id) {
+                            Log.d(TAG, "Spinner changed " + selectedItemView.toString());
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> arg0) {
+                        }
+                    };
+                    ConnectivityCheck check = new ConnectivityCheck(this);
+                    if (check.isNetworkReachableAlertUserIfNot()) {
+                            downloadJSON task = new downloadJSON(this);
+                            task.execute(myPreference.getString("websiteName", "I AM FILLER") + BIKEJSON);
+                    }
+                }
+            }
+        }
+    }
 
     //Part of the download JSON section
     private class downloadJSON extends AsyncTask<String, Void, String> {
@@ -115,7 +132,7 @@ public class Activity_ListView extends ListActivity {
         protected String doInBackground(String... params){
             // site we want to connect to
             String myURL = params[0];
-
+//TODO why can this download the json from the CNU page?
             try {
                 String myQuery = "";
                 URL url = new URL(myURL + myQuery);
@@ -185,12 +202,11 @@ public class Activity_ListView extends ListActivity {
 
     private void createCustomAdapter()
     {
-        adapter = new CustomAdapter(this,R.layout.listview_row_layout, bikeDataArrayList, downloadSite, this);
+        adapter = new CustomAdapter(this,R.layout.listview_row_layout, bikeDataArrayList, myPreference.getString("websiteName", "I AM FILLER"), this);
         // a custom data adapter
         setListAdapter(adapter);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu, menu);
@@ -200,9 +216,6 @@ public class Activity_ListView extends ListActivity {
         ArrayAdapter<CharSequence> mSpinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinnerSort, android.R.layout.simple_spinner_item);
         mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         s.setPrompt("Sort By:");
-        //TODO change background in Ice Cream Sandwich
-        //TODO ASK PERKINS ABOUT THIS
-        //s.setPopupBackgroundResource(android.R.color.background_light);
         s.setAdapter(mSpinnerAdapter);
         s.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
@@ -234,9 +247,9 @@ public class Activity_ListView extends ListActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                doSettings();
-              // Intent myIntent = new Intent(this, activityPreference.class);
-               //startActivity(myIntent);
+                //doSettings();
+                Intent myIntent = new Intent(this, activityPreference.class);
+                startActivityForResult(myIntent, SETTINGS_ACTIVITY);
                 break;
             case R.id.action_about:
                 doPopUp();
@@ -246,33 +259,6 @@ public class Activity_ListView extends ListActivity {
         }
         return true;
     }
-
- public void doSettings(){
-     //AlertDialog alert = new AlertDialog(this);
-     //TODO fix settings to use settings activity
-     CharSequence[] websites = {"tetonsoftware", "cnu.pcs"};
-     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-     builder.setTitle("Select The Website To Download From:");
-     builder.setSingleChoiceItems(websites, -1, new DialogInterface.OnClickListener(){
-     public void onClick(DialogInterface dialog, int site){
-         switch(site){
-             case 0:
-                 downloadSite = "http://www.tetonsoftware.com/bikes/";
-                 System.out.print(downloadSite);
-                 break;
-             case 1:
-                 downloadSite = "http://www.pcs.cnu.edu/~kperkins/bikes/";
-                 System.out.print(downloadSite);
-                 break;
-         }
-       dialog.dismiss();
-     }
-     });
-
-     AlertDialog alert = builder.create();
-     alert.show();
-
- }
 
     public void doPopUp(){
         String appName = "Multithreaded Networked Listactivity";

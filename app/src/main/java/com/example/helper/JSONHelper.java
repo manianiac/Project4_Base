@@ -55,7 +55,7 @@ public class JSONHelper {
                    j.getDouble("Price"));
             collectionOfBikes.add(bike);
         }
-	} catch (JSONException e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
         return collectionOfBikes;

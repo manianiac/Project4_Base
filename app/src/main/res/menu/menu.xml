@@ -3,7 +3,7 @@
 	<item
         android:id="@+id/spinner"
         android:prompt="@string/spinnerTitle"
-        android:title="SortBy:"
+        android:title="Project 4:"
         android:popupBackground="@android:color/background_light"
         android:showAsAction="always"
         android:textColor="@color/White"

@@ -9,8 +9,10 @@ package com.example.listview;
 
 public final class R {
     public static final class array {
-        public static final int sortable_fields=0x7f050000;
-        public static final int spinnerSort=0x7f050001;
+        public static final int siteValues=0x7f050000;
+        public static final int sortable_fields=0x7f050001;
+        public static final int spinnerSort=0x7f050002;
+        public static final int websites=0x7f050003;
     }
     public static final class attr {
     }

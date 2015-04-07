@@ -6,4 +6,12 @@
         <item>Price</item>
         <item>Location</item>
    </string-array>
+   <string-array name="websites">
+       <item>TetonSoftware</item>
+       <item>CNU.PCS</item>
+   </string-array>
+    <string-array name="siteValues">
+        <item>http://www.tetonsoftware.com/bikes/</item>
+        <item>http://www.pcs.cnu.edu/~kperkins/bikes/</item>
+    </string-array>
 </resources>
