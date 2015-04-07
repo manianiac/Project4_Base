@@ -76,7 +76,6 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
            // myvh = (ViewHolder) convertView.getTag();
         }
 
-        //TODO set the imageView
 
         myvh = new ViewHolder();
 
