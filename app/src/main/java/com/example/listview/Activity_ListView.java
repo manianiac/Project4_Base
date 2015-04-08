@@ -1,5 +1,6 @@
 package com.example.listview;
-//test this
+//Laura Macaluso and Will Barron
+//Project 4 - We're awesome :)
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.ListActivity;
@@ -70,7 +71,7 @@ public class Activity_ListView extends ListActivity {
                 Log.d(TAG, "Preference key =" + key);
                 if (key.equals(URL_JSON)) {
                     showToast("BLARG");
-                    //TODO handle URL changes
+
                 }
             }
         };
@@ -132,7 +133,6 @@ public class Activity_ListView extends ListActivity {
         protected String doInBackground(String... params){
             // site we want to connect to
             String myURL = params[0];
-//TODO why can this download the json from the CNU page?
             try {
                 String myQuery = "";
                 URL url = new URL(myURL + myQuery);

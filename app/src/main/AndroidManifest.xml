@@ -22,7 +22,7 @@
         
         <activity
             android:name="com.example.listview.Activity_ListView"
-            android:label="@string/spinnerTitle" >
+            android:label="@string/Title" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

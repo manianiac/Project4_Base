@@ -1,2 +1,2 @@
-C:\Users\William\Documents\GitHub\Project4_Base\app\build\intermediates\classes\debug
-C:\Users\William\Documents\GitHub\Project4_Base\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-a6209b682af9ba70dc53f504bb24e58658dfcf27.jar
+/Users/lauramacaluso/Desktop/Android Git/Project4_Base2/app/build/intermediates/classes/debug
+/Users/lauramacaluso/Desktop/Android Git/Project4_Base2/app/build/intermediates/pre-dexed/debug/support-v4-19.1.0-244014f06ade9db6c8087aacf15c008abf0a722c.jar
