@@ -1,15 +1,23 @@
+//Laura Macaluso and William Barron
 package com.example.listview;
 
-//TODO Questions: 1) Inflator Null, 2)Do we need to use Viewholder 3)Set the Imageview
-
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +27,8 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.http.util.ByteArrayBuffer;
 
 class CustomAdapter extends ArrayAdapter<BikeData> {
 
@@ -31,7 +41,7 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
     private String URL_of_JSON_host = null;
     private LayoutInflater inflater;
     private int layoutId;
-    
+    private ViewHolder myvh;
     /**
      * @author lynn
      * class that holds pointers to all the views in listview_row_layout.xml
@@ -39,8 +49,6 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
      * the images pictureID (its filename) so that I could match the picture 
      * to the bike when sorting so  
      */
-
-    //TODO define your custom adapter, pass in your collection of bikedata
     public CustomAdapter(Context context, int textViewResourceId,
 	    List<BikeData> data, String URL_of_JSON_host, Activity activity) {
 	super(context, textViewResourceId, data );
@@ -64,37 +72,31 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
         TextView DescView;
         String pictureID ;
     }
-//TODO viewholder
     @Override
     public View getView(int position, View convertView, ViewGroup parentView) {
-        ViewHolder myvh;
+
         View view = null;
         if (convertView == null) {
             view = inflater.inflate(R.layout.listview_row_layout, parentView, false);
         } else {
             view = convertView;
-           // myvh = (ViewHolder) convertView.getTag();
         }
 
-        //TODO set the imageView
-
         myvh = new ViewHolder();
-
         myvh.textView = (TextView) view.findViewById(R.id.Model);
         myvh.PriceView = (TextView) view.findViewById(R.id.Price);
         myvh.DescView = (TextView)view.findViewById(R.id.Description);
         myvh.imageView = (ImageView)view.findViewById(R.id.imageView1);
+        view.setTag(myvh);
         //set the Model
-
         myvh.textView.setText(data.get(position).Model);
-
         //set the Price
-
         myvh.PriceView.setText(String.valueOf(data.get(position).Price));
-
         //set the Description
-
         myvh.DescView.setText(data.get(position).Descripton);
+        //set Image
+        DownloadTask task = new DownloadTask(position,myvh);
+        task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, URL_of_JSON_host + getItem(position).Picture);
 
         return view;
         //give it to listview for display
@@ -109,7 +111,6 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
         //reload data
     }
 
-//TODO figure out Cases to sort...
     public void sortList(int pos) {
 
         switch(pos){
@@ -125,4 +126,93 @@ class CustomAdapter extends ArrayAdapter<BikeData> {
         notifyDataSetChanged();
 
     }
+
+    private class DownloadTask extends AsyncTask<String, Void, Bitmap> {
+        private static final String TAG = "DownloadTask";
+        private static final int DEFAULTBUFFERSIZE = 50;
+        private static final int NODATA = -1;
+        private int mPosition;
+        private ViewHolder myHolder;
+
+        public DownloadTask(int position, ViewHolder vh)
+        {
+            mPosition = position;
+            myHolder = vh;
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params) {
+
+            // site we want to connect to
+            String url = params[0];
+
+            // note streams are left willy-nilly here because it declutters the
+            // example
+            try {
+                URL url1 = new URL(url);
+
+                // this does no network IO
+                HttpURLConnection connection = (HttpURLConnection) url1.openConnection();
+
+                // can further configure connection before getting data
+                // cannot do this after connected
+                // connection.setRequestMethod("GET");
+                // connection.setReadTimeout(timeoutMillis);
+                // connection.setConnectTimeout(timeoutMillis);
+
+                // this opens a connection, then sends GET & headers
+                connection.connect();
+
+                // lets see what we got make sure its one of
+                // the 200 codes (there can be 100 of them
+                // http_status / 100 != 2 does integer div any 200 code will = 2
+                int statusCode = connection.getResponseCode();
+                if (statusCode / 100 != 2) {
+                    Log.e(TAG, "Error-connection.getResponseCode returned "
+                            + Integer.toString(statusCode));
+                    return null;
+                }
+
+                // get our streams, a more concise implementation is
+                // BufferedInputStream bis = new
+                // BufferedInputStream(connection.getInputStream());
+                InputStream is = connection.getInputStream();
+
+                // the following buffer will grow as needed
+                ByteArrayBuffer baf = new ByteArrayBuffer(DEFAULTBUFFERSIZE);
+                int current;
+
+                // wrap in finally so that stream bis is sure to close
+                BufferedInputStream bis = new BufferedInputStream(is);
+                try {
+                    while ((current = bis.read()) != NODATA) {
+                        baf.append((byte) current);
+                    }
+
+                    // convert to a bitmap
+                    byte[] imageData = baf.toByteArray();
+                    return BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                } finally {
+                    bis.close();
+                }
+                // close resource no matter what exception occurs
+
+            } catch (Exception exc) {
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+               Drawable mImage = new BitmapDrawable(result);
+               //ImageView v = (ImageView)findViewById(R.id.webImage);
+               myHolder.imageView.setImageBitmap(result);
+
+        }
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+    }
+
 }
